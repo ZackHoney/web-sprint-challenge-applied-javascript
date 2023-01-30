@@ -8,29 +8,17 @@ const Tabs = (topics) => {
   // then the function returns the markup below.
   // The tags used, the hierarchy of elements and their attributes must match the provided markup!
   // The text inside elements will be set using their `textContent` property (NOT `innerText`).
-
-  const divWrapper = document.createElement('div');
-  const div1 = document.createElement('div');
-  const div2 = document.createElement('div');
-  const div3 = document.createElement('div');
-  const div4 = document.createElement('div');
-  const div5 = document.createElement('div');
-
-  divWrapper.appendChild(div1);
-  divWrapper.appendChild(div2);
-  divWrapper.appendChild(div3);
-  divWrapper.appendChild(div4);
-  divWrapper.appendChild(div5);
-
-  divWrapper.classList.add('topics');
-  div1.classList.add('tab')
-  div2.classList.add('tab')
-  div3.classList.add('tab')
-  div4.classList.add('tab')
-  div5.classList.add('tab')
- 
   
+  const divWrapper = document.createElement('div');
+  divWrapper.classList.add('topics');
 
+  topics.forEach(element => {
+    const tab = document.createElement('div');
+    tab.classList.add('tab');
+    divWrapper.appendChild(tab);
+    tab.textContent = element;
+  })
+  
   return divWrapper;
   
   
@@ -49,12 +37,12 @@ const tabsAppender = (selector) => {
 
   axios.get(`http://localhost:5001/api/topics`)
   .then(res => {
-  
+  document.querySelector(selector).appendChild(Tabs(res.data.topics))
   })
   .catch(err => {
     console.error(err);
   })
-  .finally(() => console.log("Complete"));
+  
 
 
 

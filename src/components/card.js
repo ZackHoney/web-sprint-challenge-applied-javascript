@@ -1,3 +1,6 @@
+import axios from 'axios';
+
+
 const Card = (article) => {
   // TASK 5
   // ---------------------
@@ -7,6 +10,30 @@ const Card = (article) => {
   // The text inside elements will be set using their `textContent` property (NOT `innerText`).
   // Add a listener for click events so that when a user clicks on a card, the headline of the article is logged to the console.
   //
+  const divWrapper = document.createElement('div');
+  const headline = document.createElement('div');
+  const author = document.createElement('div');
+  const imgContainer = document.createElement('div');
+  const img = document.createElement('img');
+  const authorName = document.createElement('span');
+
+  divWrapper.classList.add('card');
+  headline.classList.add('headline');
+  author.classList.add('author');
+  imgContainer.classList.add('img-container');
+
+  divWrapper.appendChild(headline);
+  divWrapper.appendChild(author);
+  author.appendChild(imgContainer);
+  imgContainer.appendChild(img);
+  author.appendChild(authorName);
+
+  headline.textContent = article.headline;
+  authorName.textContent = `By ${article.authorName}`;
+  img.src = article.authorPhoto;
+
+  return divWrapper;
+
   // <div class="card">
   //   <div class="headline">{ headline }</div>
   //   <div class="author">
@@ -20,6 +47,27 @@ const Card = (article) => {
 }
 
 const cardAppender = (selector) => {
+  axios.get(`http://localhost:5001/api/articles`)
+  .then(res => {
+    res.data.articles.javascript.forEach(element => {
+      document.querySelector(selector).appendChild(Card(element))
+    })
+    res.data.articles.bootstrap.forEach(element => {
+      document.querySelector(selector).appendChild(Card(element))
+    })
+    res.data.articles.technology.forEach(element => {
+      document.querySelector(selector).appendChild(Card(element))
+    })
+    res.data.articles.jquery.forEach(element => {
+      document.querySelector(selector).appendChild(Card(element))
+    })
+    res.data.articles.node.forEach(element => {
+      document.querySelector(selector).appendChild(Card(element))
+    })
+    })
+  .catch(err => {
+    console.error(err)
+  })
   // TASK 6
   // ---------------------
   // Implement this function that takes a css selector as its only argument.
